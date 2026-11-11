@@ -1,0 +1,50 @@
+﻿ON THE FLY - PROJECT FILE INVENTORY
+Generated: 10/22/2026 15:51:24
+Root: D:\FAU\Session Fall 2026\WEB103\Lab05\onthefly
+Total files: 42
+===========================================================================
+
+FILE LIST:
+
+client\.gitignore | 13 bytes
+client\eslint.config.js | 763 bytes
+client\index.html | 346 bytes
+client\package.json | 655 bytes
+client\package-lock.json | 96890 bytes
+client\README.md | 18 bytes
+client\src\App.css | 1124 bytes
+client\src\App.jsx | 2397 bytes
+client\src\components\ActivityBtn.css | 165 bytes
+client\src\components\ActivityBtn.jsx | 673 bytes
+client\src\components\AddTripOptionCard.jsx | 928 bytes
+client\src\components\Card.css | 1572 bytes
+client\src\components\Card.jsx | 759 bytes
+client\src\components\DestinationBtn.css | 150 bytes
+client\src\components\DestinationBtn.jsx | 203 bytes
+client\src\components\DestinationCard.css | 1581 bytes
+client\src\components\DestinationCard.jsx | 540 bytes
+client\src\index.css | 269 bytes
+client\src\main.jsx | 318 bytes
+client\src\pages\AddToTrip.jsx | 802 bytes
+client\src\pages\CreateActivity.css | 707 bytes
+client\src\pages\CreateActivity.jsx | 1430 bytes
+client\src\pages\CreateDestination.css | 707 bytes
+client\src\pages\CreateDestination.jsx | 2554 bytes
+client\src\pages\CreateTrip.css | 707 bytes
+client\src\pages\CreateTrip.jsx | 2691 bytes
+client\src\pages\EditTrip.css | 1088 bytes
+client\src\pages\EditTrip.jsx | 3447 bytes
+client\src\pages\ReadDestinations.jsx | 1108 bytes
+client\src\pages\ReadTrips.jsx | 971 bytes
+client\src\pages\TripDetails.css | 865 bytes
+client\src\pages\TripDetails.jsx | 3024 bytes
+client\vite.config.js | 267 bytes
+package-lock.json | 47894 bytes
+server\config\data\data.json | 2780 bytes
+server\config\database.js | 332 bytes
+server\config\dotenv.js | 67 bytes
+server\config\reset.js | 5598 bytes
+server\controllers\trips.js | 2869 bytes
+server\package.json | 448 bytes
+server\routes\trips.js | 443 bytes
+server\server.js | 549 bytes

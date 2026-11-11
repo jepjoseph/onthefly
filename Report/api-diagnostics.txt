@@ -1,0 +1,28 @@
+﻿ON THE FLY - API DIAGNOSTICS
+Date: 10/22/2026 15:54:06
+
+PORT 3001: True
+PORT 5173: True
+
+URL: http://localhost:3001/
+STATUS: 200
+CONTENT TYPE: text/html; charset=utf-8
+BODY: <h1 style="text-align: center; margin-top: 50px;">✈️ On the Fly API</h1>
+
+URL: http://localhost:3001/api/trips
+STATUS: 200
+CONTENT TYPE: application/json; charset=utf-8
+BODY: [{"id":1,"title":"Highlights of the United Kingdom","description":"Embark on a guided tour of England, Scotland, and Ireland, which will take you from cosmopolitan London to the medieval city of Edinburgh. Then, pass through the Lake District and Wales as you travel between Scotland and Ireland. After arriving in the Emerald Isle, grab a pint (or a few) with Dubliners and make your way along the scenic Ring of Kerry and Cliffs of Moher, taking in stunning sea views as you go.","img_url":"https:/
+
+URL: http://localhost:3001/api/destinations
+ERROR: The remote server returned an error: (404) Not Found.
+HTTP STATUS: 404
+
+URL: http://localhost:5173/api/trips
+STATUS: 200
+CONTENT TYPE: application/json; charset=utf-8
+BODY: [{"id":1,"title":"Highlights of the United Kingdom","description":"Embark on a guided tour of England, Scotland, and Ireland, which will take you from cosmopolitan London to the medieval city of Edinburgh. Then, pass through the Lake District and Wales as you travel between Scotland and Ireland. After arriving in the Emerald Isle, grab a pint (or a few) with Dubliners and make your way along the scenic Ring of Kerry and Cliffs of Moher, taking in stunning sea views as you go.","img_url":"https:/
+
+URL: http://localhost:5173/api/destinations
+ERROR: The remote server returned an error: (404) Not Found.
+HTTP STATUS: 404

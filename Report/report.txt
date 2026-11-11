@@ -1,0 +1,2119 @@
+﻿ON THE FLY - SOURCE CODE INSPECTION
+Generated: 10/22/2026 15:53:07
+Project: D:\FAU\Session Fall 2026\WEB103\Lab05\onthefly
+Files inspected: 39
+================================================================================
+
+SECTION 1 - API AND CONFIGURATION REFERENCES
+--------------------------------------------------------------------------------
+client\src\App.jsx:19 [Matching pattern: /api/trips]
+client\src\App.jsx:25 [Matching pattern: fetch\(]
+client\src\components\ActivityBtn.jsx:16 [Matching pattern: fetch\(]
+client\src\components\AddTripOptionCard.jsx:21 [Matching pattern: /api/trips]
+client\src\pages\CreateActivity.jsx:30 [Matching pattern: fetch\(]
+client\src\pages\CreateDestination.jsx:35 [Matching pattern: fetch\(]
+client\src\pages\CreateTrip.jsx:37 [Matching pattern: /api/trips]
+client\src\pages\EditTrip.jsx:53 [Matching pattern: /api/trips]
+client\src\pages\EditTrip.jsx:64 [Matching pattern: /api/trips]
+client\src\pages\TripDetails.jsx:36 [Matching pattern: fetch\(]
+client\src\pages\TripDetails.jsx:42 [Matching pattern: fetch\(]
+client\src\pages\TripDetails.jsx:43 [Matching pattern: /api/trips]
+client\vite.config.js:7 [Matching pattern: proxy]
+client\vite.config.js:9 [Matching pattern: localhost]
+server\routes\trips.js:4 [Matching pattern: express\.Router]
+server\routes\trips.js:6 [Matching pattern: router\.]
+server\routes\trips.js:7 [Matching pattern: router\.]
+server\routes\trips.js:8 [Matching pattern: router\.]
+server\routes\trips.js:9 [Matching pattern: router\.]
+server\routes\trips.js:10 [Matching pattern: router\.]
+server\routes\trips.js:11 [Matching pattern: router\.]
+server\server.js:8 [Matching pattern: app\.use]
+server\server.js:10 [Matching pattern: app\.use]
+server\server.js:20 [Matching pattern: /api/trips]
+server\server.js:22 [Matching pattern: process\.env\.PORT]
+server\server.js:24 [Matching pattern: app\.listen]
+server\server.js:25 [Matching pattern: localhost]
+
+SECTION 2 - SOURCE FILE CONTENTS
+================================================================================
+
+================================================================================
+FILE: client\eslint.config.js
+================================================================================
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{js,jsx}'],
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs['recommended-latest'],
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+    },
+  },
+])
+
+
+================================================================================
+FILE: client\index.html
+================================================================================
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+
+    <title>On The Fly</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+================================================================================
+FILE: client\package.json
+================================================================================
+{
+  "name": "onthefly",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^7.7.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "vite": "^7.0.4"
+  }
+}
+
+
+================================================================================
+FILE: client\README.md
+================================================================================
+# web103_unit6_lab
+
+================================================================================
+FILE: client\src\App.css
+================================================================================
+.App {
+  font-family:Avenir, "Century Gothic", sans-serif;
+  font-weight:100; 
+  font-style:normal;
+  font-size: calc(10px + 2vmin);
+  color: #373D3F;
+  justify-content: center;
+  background-image: url('background.jpg');
+  background-color: #97bfd8a3;
+  background-position: right center;
+  background-size: cover;
+  padding:20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+
+  min-height: 800px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+
+.header {
+  width: 100%;
+  color: #373D3F;
+  text-align: center;
+}
+
+.headerBtn {
+  margin-bottom: 50px;
+  margin-right: 10px;
+}
+
+.ReadTrips {
+  display: grid;
+  grid-auto-flow: row;
+
+  gap: 30px;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  color:373D3F;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+.headerBtn:hover {
+  background-color: #97bfd8;
+  transition: all .7s ease;
+  -webkit-transition: all .7s ease;
+}
+
+================================================================================
+FILE: client\src\App.jsx
+================================================================================
+import "./App.css";
+import { useState, useEffect } from "react";
+import { Link, useRoutes } from "react-router";
+import ReadTrips from "./pages/ReadTrips";
+import CreateTrip from "./pages/CreateTrip";
+import EditTrip from "./pages/EditTrip";
+import CreateDestination from "./pages/CreateDestination";
+import ReadDestinations from "./pages/ReadDestinations";
+import TripDetails from "./pages/TripDetails";
+import CreateActivity from "./pages/CreateActivity";
+import AddToTrip from "./pages/AddToTrip";
+
+const App = () => {
+  const [trips, setTrips] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+
+  useEffect(() => {
+    const fetchTrips = async () => {
+      const response = await fetch("/api/trips");
+      const data = await response.json();
+      setTrips(data);
+    };
+
+    const fetchDestinations = async () => {
+      const response = await fetch("/api/destinations");
+      const data = await response.json();
+      setDestinations(data);
+    };
+
+    fetchTrips();
+    fetchDestinations();
+  }, []);
+
+  // Sets up routes
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <ReadTrips data={trips} />,
+    },
+    {
+      path: "/trip/new",
+      element: <CreateTrip />,
+    },
+    {
+      path: "/edit/:id",
+      element: <EditTrip data={trips} />,
+    },
+    {
+      path: "/destinations",
+      element: <ReadDestinations data={destinations} />,
+    },
+    {
+      path: "/trip/get/:id",
+      element: <TripDetails data={trips} />,
+    },
+    {
+      path: "/destination/new",
+      element: <CreateDestination />,
+    },
+    {
+      path: "/activity/create/:trip_id",
+      element: <CreateActivity />,
+    },
+    {
+      path: "/destinations/add/:destination_id",
+      element: <AddToTrip data={trips} />,
+    },
+  ]);
+
+  return (
+    <div className="App">
+      <div className="header">
+        <h1>On The Fly âœˆï¸</h1>
+        <Link to="/">
+          <button className="headerBtn">Explore Trips</button>
+        </Link>
+        <Link to="/destinations">
+          <button className="headerBtn">Explore Destinations</button>
+        </Link>
+        <Link to="/trip/new">
+          <button className="headerBtn"> + Add Trip </button>
+        </Link>
+        <Link to="/destination/new">
+          <button className="headerBtn"> + Add Destination </button>
+        </Link>
+      </div>
+      {element}
+    </div>
+  );
+};
+
+export default App;
+
+
+================================================================================
+FILE: client\src\components\ActivityBtn.css
+================================================================================
+
+.activityBtn {
+    text-align: center;
+    padding:5;
+    margin-right: 10px;
+    width: 170px;
+}
+
+.activityBtn:hover {
+    background: rgba(21, 5, 5, 0.184);
+
+}
+
+
+
+
+================================================================================
+FILE: client\src\components\ActivityBtn.jsx
+================================================================================
+import { useState } from "react";
+import "./ActivityBtn.css";
+
+const ActivityBtn = (props) => {
+  const [num_votes, setNumVotes] = useState(props.num_votes);
+
+  const updateCount = () => {
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ num_votes: num_votes + 1 }),
+    };
+
+    fetch("/api/activities/" + props.id, options);
+    setNumVotes((num_votes) => num_votes + 1);
+  };
+
+  return (
+    <button className="activityBtn" id={props.id} onClick={updateCount}>
+      {props.activity} <br /> {"â–³ " + num_votes + " Upvotes"}
+    </button>
+  );
+};
+
+export default ActivityBtn;
+
+
+================================================================================
+FILE: client\src\components\AddTripOptionCard.jsx
+================================================================================
+import { useParams } from "react-router";
+import "./Card.css";
+
+const AddTripOptionCard = (props) => {
+  const { destination_id } = useParams();
+
+  const addToTrip = async (event) => {
+    event.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        trip_id: props.id,
+        destination_id: destination_id,
+      }),
+    };
+
+    fetch("/api/trips-destinations", options);
+    window.location.href = "/";
+  };
+
+  return (
+    <div className="Card" style={{ backgroundImage: `url(${props.img_url})` }}>
+      <div className="card-info">
+        <h2 className="title">{props.title}</h2>
+        <p className="description">{props.description}</p>
+        <button className="addToTrip" onClick={addToTrip}>
+          + Add to Trip
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AddTripOptionCard;
+
+
+================================================================================
+FILE: client\src\components\Card.css
+================================================================================
+.Card {
+    backdrop-filter: blur(2px);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    border-radius: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 10px;
+    margin-bottom: 15px;
+    width:560px;
+    height: 280px;
+    background-size: cover;
+    text-align: center;
+    display: flex;
+    background-color: rgba(22, 11, 0, 0.507);
+    background-blend-mode: multiply;
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.card-info {
+    padding-top: 0px;
+    width: 100%;
+    backdrop-filter: blur(1px); 
+}
+
+
+.destination {
+    padding-left:30px;
+    font-size: 24px;
+}
+
+.description {
+    text-align: justify;
+    text-justify: inter-word;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    height: 145px;
+}
+
+.priceBtn {
+    margin-right: 15px;
+    color: white;
+    background-color: rgba(52, 52, 52, 0.612);
+}
+
+.priceBtn:hover {
+    cursor: default;
+}
+
+.daysBtn {
+    margin-right: 15px;
+    color: white;
+    background-color: rgba(52, 52, 52, 0.612);
+}
+
+.daysBtn:hover {
+    cursor: default;
+}
+
+.seeMoreBtn {
+    margin-right: 15px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(38, 163, 217, 0.577);
+}
+
+/* .betButton {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+
+    color:#373D3F;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+.betButton:hover {
+
+  } */
+
+.moreButton {
+    width: 30px;
+    float:right;
+
+}
+.moreButton:hover {
+    cursor: pointer;
+}
+
+================================================================================
+FILE: client\src\components\Card.jsx
+================================================================================
+import './Card.css'
+import more from './more.png'
+import { Link } from 'react-router'
+
+
+const Card = (props) =>  {
+
+  return (
+      <div className="Card" style={{ backgroundImage:`url(${props.img_url})`}} >
+        <div className="card-info">
+          <Link to={'edit/'+ props.id}><img className="moreButton" alt="edit button" src={more} /></Link>
+          <h2 className="title">{props.title}</h2>
+          <p className="description">{props.description}</p>
+          <button className="priceBtn">{props.total_cost}</button>
+          <button className="daysBtn">{props.num_days + " days"}</button>
+          <Link to={'trip/get/'+ props.id}><button className="seeMoreBtn">See More</button></Link>
+        </div>
+      </div>
+  );
+};
+
+export default Card;
+
+================================================================================
+FILE: client\src\components\DestinationBtn.css
+================================================================================
+
+.DestinationBtn {
+    text-align: center;
+    padding:5;
+    margin-right: 10px;
+    width: 170px;
+}
+
+.DestinationBtn:hover {
+    cursor:default;
+
+}
+
+
+================================================================================
+FILE: client\src\components\DestinationBtn.jsx
+================================================================================
+import './DestinationBtn.css'
+
+
+const DestinationBtn = (props) =>  {
+
+  return (
+    <button className="DestinationBtn" id={props.id}>{props.destination}</button>
+  );
+
+};
+
+export default DestinationBtn;
+
+================================================================================
+FILE: client\src\components\DestinationCard.css
+================================================================================
+.DestinationCard {
+    backdrop-filter: blur(2px);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    border-radius: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 10px;
+    margin-bottom: 15px;
+    width:560px;
+    height: 280px;
+    background-size: cover;
+    text-align: center;
+    display: flex;
+    background-color: rgba(22, 11, 0, 0.507);
+    background-blend-mode: multiply;
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.card-info {
+    padding-top: 0px;
+    width: 100%;
+    backdrop-filter: blur(1px); 
+}
+
+
+.title {
+    padding-left:30px;
+    font-size: 24px;
+}
+
+.description {
+    text-align: justify;
+    text-justify: inter-word;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    height: 145px;
+}
+
+.cityBtn {
+    margin-right: 15px;
+    color: white;
+    background-color: rgba(52, 52, 52, 0.612);
+}
+
+.cityBtn:hover {
+    cursor: default;
+}
+
+.countryBtn {
+    margin-right: 15px;
+    color: white;
+    background-color: rgba(52, 52, 52, 0.612);
+}
+
+.countryBtn:hover {
+    cursor: default;
+}
+
+.seeMoreBtn {
+    margin-right: 15px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(38, 163, 217, 0.577);
+}
+
+/* .betButton {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+
+    color:#373D3F;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+.betButton:hover {
+
+  } */
+
+.moreButton {
+    width: 30px;
+    float:right;
+
+}
+.moreButton:hover {
+    cursor: pointer;
+}
+
+================================================================================
+FILE: client\src\components\DestinationCard.jsx
+================================================================================
+import './DestinationCard.css'
+import { Link } from 'react-router'
+
+
+const DestinationCard = (props) =>  {
+
+
+  return (
+      <div className="DestinationCard" style={{ backgroundImage:`url(${props.img_url})`}} >
+        <div className="card-info">
+          <h2 className="destination">{props.destination}</h2>
+          <p className="description">{props.description}</p>
+         <Link to={'add/'+ props.id}><button className="addToTripBtn">+ Add to Trip</button></Link>
+        </div>
+      </div>
+  );
+};
+
+export default DestinationCard;
+
+================================================================================
+FILE: client\src\index.css
+================================================================================
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+================================================================================
+FILE: client\src\main.jsx
+================================================================================
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router';
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>,
+)
+
+
+================================================================================
+FILE: client\src\pages\AddToTrip.jsx
+================================================================================
+import { useState, useEffect } from 'react';
+import AddTripOptionCard from '../components/AddTripOptionCard';
+
+
+const AddToTrip = (props) => {
+
+    const [trips, setTrips] = useState([]);
+    
+
+    useEffect(() => {
+        setTrips(props.data);
+    }, [props]);
+    
+    return (
+        <div className="AddToTrip">
+            {
+                trips && trips.length > 0 ?
+                trips.map((trip,index) => 
+                   <AddTripOptionCard key={trip.id} 
+                         id={trip.id} 
+                         title={trip.title} 
+                         description={trip.description} 
+                         img_url={trip.img_url}  />
+                ) : <h3 className="noResults">{'No Trips Yet ðŸ˜ž'}</h3>
+            }
+        </div>  
+    )
+}
+
+export default AddToTrip;
+
+================================================================================
+FILE: client\src\pages\CreateActivity.css
+================================================================================
+input {
+    margin-top: 10px;
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+label {
+    font-size: 20px;
+}
+
+textarea {
+    border-radius: 8px;
+    width: 100%;
+    border: 1px solid transparent;
+    font-size: 20px;
+}
+
+input[type=submit] {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    color:white;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin-top: 20px;
+  }
+
+input[type=submit]:hover {
+    border-color: #646cff;
+}
+
+================================================================================
+FILE: client\src\pages\CreateActivity.jsx
+================================================================================
+import { useState } from "react";
+import { useParams } from "react-router";
+import "./CreateActivity.css";
+
+const CreateActivity = () => {
+  const [activity, setActivity] = useState({ activity: "" });
+  const { trip_id } = useParams();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setActivity((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const createActivity = async (event) => {
+    event.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(activity),
+    };
+
+    fetch("/api/activities/" + trip_id, options);
+    window.location.href = "/";
+  };
+
+  return (
+    <div>
+      <center>
+        <h3>Add Activity</h3>
+      </center>
+      <form>
+        <label>Activity</label> <br />
+        <input
+          type="text"
+          id="activity"
+          name="activity"
+          value={activity.activity}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Trip ID</label>
+        <br />
+        <input
+          type="number"
+          id="trip_id"
+          name="trip_id"
+          value={trip_id}
+          readOnly
+        />
+        <br />
+        <br />
+        <input type="submit" value="Submit" onClick={createActivity} />
+      </form>
+    </div>
+  );
+};
+
+export default CreateActivity;
+
+
+================================================================================
+FILE: client\src\pages\CreateDestination.css
+================================================================================
+input {
+    margin-top: 10px;
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+label {
+    font-size: 20px;
+}
+
+textarea {
+    border-radius: 8px;
+    width: 100%;
+    border: 1px solid transparent;
+    font-size: 20px;
+}
+
+input[type=submit] {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    color:white;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin-top: 20px;
+  }
+
+input[type=submit]:hover {
+    border-color: #646cff;
+}
+
+================================================================================
+FILE: client\src\pages\CreateDestination.jsx
+================================================================================
+import { useState } from "react";
+import "./CreateDestination.css";
+
+const CreateDestination = () => {
+  const [destination, setDestination] = useState({
+    destination: "",
+    description: "",
+    city: "",
+    country: "",
+    img_url: "",
+    flag_img_url: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setDestination((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const createDestination = async (event) => {
+    event.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(destination),
+    };
+
+    await fetch("/api/destinations", options);
+    window.location.href = "/destinations";
+  };
+
+  return (
+    <div>
+      <center>
+        <h3>Add Destination</h3>
+      </center>
+      <form>
+        <label>Destination</label> <br />
+        <input
+          type="text"
+          id="destination"
+          name="destination"
+          value={destination.destination}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Description</label>
+        <br />
+        <textarea
+          rows="5"
+          cols="50"
+          id="description"
+          name="description"
+          value={destination.description}
+          onChange={handleChange}
+        ></textarea>
+        <br />
+        <label>City </label>
+        <br />
+        <input
+          type="text"
+          id="city"
+          name="city"
+          value={destination.city}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Country</label>
+        <br />
+        <input
+          type="text"
+          id="country"
+          name="country"
+          value={destination.country}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Image URL </label>
+        <br />
+        <input
+          type="text"
+          id="img_url"
+          name="img_url"
+          value={destination.img_url}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Flag Image URL</label>
+        <br />
+        <input
+          type="text"
+          id="flag_img_url"
+          name="flag_img_url"
+          value={destination.flag_img_url}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <input type="submit" value="Submit" onClick={createDestination} />
+      </form>
+    </div>
+  );
+};
+
+export default CreateDestination;
+
+
+================================================================================
+FILE: client\src\pages\CreateTrip.css
+================================================================================
+input {
+    margin-top: 10px;
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+label {
+    font-size: 20px;
+}
+
+textarea {
+    border-radius: 8px;
+    width: 100%;
+    border: 1px solid transparent;
+    font-size: 20px;
+}
+
+input[type=submit] {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    color:white;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin-top: 20px;
+  }
+
+input[type=submit]:hover {
+    border-color: #646cff;
+}
+
+================================================================================
+FILE: client\src\pages\CreateTrip.jsx
+================================================================================
+import { useState } from "react";
+import "./CreateTrip.css";
+
+const CreateTrip = () => {
+  const [trip, setTrip] = useState({
+    id: 0,
+    title: "",
+    description: "",
+    img_url: "",
+    num_days: 0,
+    start_date: "",
+    end_date: "",
+    total_cost: 0.0,
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setTrip((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const createTrip = (event) => {
+    event.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(trip),
+    };
+
+    fetch("/api/trips", options);
+    window.location.href = "/";
+  };
+
+  return (
+    <div>
+      <center>
+        <h3> Create New Trip</h3>
+      </center>
+      <form>
+        <label>Title</label> <br />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value={trip.title}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Description</label>
+        <br />
+        <textarea
+          rows="5"
+          cols="50"
+          id="description"
+          name="description"
+          value={trip.description}
+          onChange={handleChange}
+        ></textarea>
+        <br />
+        <label>Image URL </label>
+        <br />
+        <input
+          type="text"
+          id="img_url"
+          name="img_url"
+          value={trip.img_url}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Number of Days</label>
+        <br />
+        <input
+          type="number"
+          id="num_days"
+          name="num_days"
+          value={trip.num_days}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Start Date </label>
+        <br />
+        <input
+          type="text"
+          id="start_date"
+          name="start_date"
+          value={trip.start_date}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>End Date </label>
+        <br />
+        <input
+          type="text"
+          id="end_date"
+          name="end_date"
+          value={trip.end_date}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Total Cost</label>
+        <br />
+        <input
+          type="text"
+          id="total_cost"
+          name="total_cost"
+          value={trip.total_cost}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <input type="submit" value="Submit" onClick={createTrip} />
+      </form>
+    </div>
+  );
+};
+
+export default CreateTrip;
+
+
+================================================================================
+FILE: client\src\pages\EditTrip.css
+================================================================================
+input {
+    margin-top: 10px;
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+label {
+    font-size: 20px;
+}
+
+textarea {
+    border-radius: 8px;
+    width: 100%;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-family: inherit;
+}
+
+input[type=submit] {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    color:white;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin-top: 20px;
+  }
+
+input[type=submit]:hover {
+    border-color: #646cff;
+}
+
+.deleteButton {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #870404;
+    color:white;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+================================================================================
+FILE: client\src\pages\EditTrip.jsx
+================================================================================
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import "./EditTrip.css";
+
+const EditTrip = ({ data }) => {
+  const { id } = useParams();
+  const [post, setPost] = useState({
+    id: 0,
+    title: "",
+    description: "",
+    img_url: "",
+    num_days: 0,
+    start_date: "",
+    end_date: "",
+    total_cost: 0.0,
+  });
+
+  useEffect(() => {
+    const result = data.filter((item) => item.id === parseInt(id))[0];
+    setPost({
+      id: parseInt(result.id),
+      title: result.title,
+      description: result.description,
+      img_url: result.img_url,
+      num_days: parseInt(result.num_days),
+      start_date: result.start_date.slice(0, 10),
+      end_date: result.end_date.slice(0, 10),
+      total_cost: result.total_cost,
+    });
+  }, [data, id]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setPost((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const updateTrip = (event) => {
+    event.preventDefault();
+
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(trip),
+    };
+
+    fetch("/api/trips/" + id, options);
+    window.location.href = "/";
+  };
+
+  const deleteTrip = (event) => {
+    event.preventDefault();
+
+    const options = {
+      method: "DELETE",
+    };
+
+    fetch("/api/trips/" + id, options);
+    window.location.href = "/";
+  };
+
+  return (
+    <div>
+      <form>
+        <label>Title</label> <br />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value={post.title}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Description</label>
+        <br />
+        <textarea
+          rows="5"
+          cols="50"
+          id="description"
+          name="description"
+          value={post.description}
+          onChange={handleChange}
+        ></textarea>
+        <br />
+        <label>Image URL </label>
+        <br />
+        <input
+          type="text"
+          id="img_url"
+          name="img_url"
+          value={post.img_url}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Number of Days</label>
+        <br />
+        <input
+          type="number"
+          id="num_days"
+          name="num_days"
+          value={post.num_days}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Start Date </label>
+        <br />
+        <input
+          type="text"
+          id="start_date"
+          name="start_date"
+          value={post.start_date}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>End Date </label>
+        <br />
+        <input
+          type="text"
+          id="end_date"
+          name="end_date"
+          value={post.end_date}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label>Total Cost</label>
+        <br />
+        <input
+          type="text"
+          id="total_cost"
+          name="total_cost"
+          value={post.total_cost}
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <input type="submit" value="Submit" onClick={updateTrip} />
+        <button className="deleteButton" onClick={deleteTrip}>
+          Delete
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default EditTrip;
+
+
+================================================================================
+FILE: client\src\pages\ReadDestinations.jsx
+================================================================================
+import { useState, useEffect } from 'react';
+import DestinationCard from '../components/DestinationCard';
+
+
+const ReadDestinations = (props) => {
+
+    const [destinations, setDestinations] = useState([]);
+
+
+    useEffect(() => {
+
+        setDestinations(props.data);
+    }, [props]);
+    
+
+    return (
+        <div className="ReadDestinations">
+            {
+                destinations && destinations.length > 0 ?
+                destinations.map((destination,index) => 
+                   <DestinationCard key={destination.id} 
+                         id={destination.id} 
+                         destination={destination.destination} 
+                         description={destination.description} 
+                         city={destination.city} 
+                         country={destination.country}
+                         img_url={destination.img_url}
+                         flag_img_url={destination.flag_img_url} 
+                    />
+                ) : <h3 className="noResults">{'No Destinations Yet ðŸ˜ž'}</h3>
+            }
+        </div>  
+    )
+}
+
+export default ReadDestinations;
+
+================================================================================
+FILE: client\src\pages\ReadTrips.jsx
+================================================================================
+import { useState, useEffect } from 'react';
+import Card from '../components/Card';
+
+
+const ReadTrips = (props) => {
+
+    const [trips, setTrips] = useState([]);
+    
+
+    useEffect(() => {
+        setTrips(props.data);
+    }, [props]);
+    
+    return (
+        <div className="ReadTrips">
+            {
+                trips && trips.length > 0 ?
+                trips.map((trip,index) => 
+                   <Card key={trip.id} 
+                         id={trip.id} 
+                         title={trip.title} 
+                         description={trip.description} 
+                         img_url={trip.img_url} 
+                         num_days={trip.num_days}
+                         start_date={trip.start_date}
+                         end_date={trip.end_date}
+                         total_cost={trip.total_cost} />
+                ) : <h3 className="noResults">{'No Trips Yet ðŸ˜ž'}</h3>
+            }
+        </div>  
+    )
+}
+
+export default ReadTrips;
+
+================================================================================
+FILE: client\src\pages\TripDetails.css
+================================================================================
+
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    
+
+  }
+  
+  .flex-container > div {
+    background-color: #f1f1f1;
+    width: 50%;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+
+  .flex-container p {
+    font-size: 20px;
+    line-height: 30px;
+    text-align: justify;
+  }
+
+  .right-side {
+    background-size: cover;
+  }
+
+  .addActivityBtn{
+    color: rgb(255, 255, 255);
+    background-color: rgba(38, 163, 217, 0.491);
+  }
+
+  .addActivityBtn:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgba(29, 122, 162, 0.491);
+  }
+
+  .addDestinationBtn{
+    color: rgb(255, 255, 255);
+    background-color: rgba(38, 163, 217, 0.491);
+  }
+
+  .addDestinationBtn:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgba(29, 122, 162, 0.491);
+  }
+
+================================================================================
+FILE: client\src\pages\TripDetails.jsx
+================================================================================
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router";
+import ActivityBtn from "../components/ActivityBtn";
+import DestinationBtn from "../components/DestinationBtn";
+import "./TripDetails.css";
+
+const TripDetails = ({ data }) => {
+  const { id } = useParams();
+  const [post, setPost] = useState({
+    id: 0,
+    title: "",
+    description: "",
+    img_url: "",
+    num_days: 0,
+    start_date: "",
+    end_date: "",
+    total_cost: 0.0,
+  });
+  const [activities, setActivities] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+
+  useEffect(() => {
+    const result = data.filter((item) => item.id === parseInt(id))[0];
+    setPost({
+      id: parseInt(result.id),
+      title: result.title,
+      description: result.description,
+      img_url: result.img_url,
+      num_days: parseInt(result.num_days),
+      start_date: result.start_date.slice(0, 10),
+      end_date: result.end_date.slice(0, 10),
+      total_cost: result.total_cost,
+    });
+
+    const fetchActivities = async () => {
+      const response = await fetch("/api/activities/" + id);
+      const data = await response.json();
+      setActivities(data);
+    };
+
+    const fetchDestinations = async () => {
+      const response = await fetch(
+        "/api/trips-destinations/destinations/" + id,
+      );
+      const data = await response.json();
+      setDestinations(data);
+    };
+
+    fetchActivities();
+    fetchDestinations();
+  }, [data, id]);
+
+  return (
+    <div className="out">
+      <div className="flex-container">
+        <div className="left-side">
+          <h3>{post.title}</h3>
+          <p>{"ðŸ—“ï¸ Duration: " + post.num_days + " days "}</p>
+          <p>{"ðŸ›« Depart: " + post.start_date}</p>
+          <p>{"ðŸ›¬ Return: " + post.end_date}</p>
+          <p>{post.description}</p>
+        </div>
+
+        <div
+          className="right-side"
+          style={{ backgroundImage: `url(${post.img_url})` }}
+        ></div>
+      </div>
+
+      <div className="flex-container">
+        <div className="activities">
+          {activities && activities.length > 0
+            ? activities.map((activity, index) => (
+                <ActivityBtn
+                  key={activity.id}
+                  id={activity.id}
+                  activity={activity.activity}
+                  num_votes={activity.num_votes}
+                />
+              ))
+            : ""}
+          <br />
+          <Link to={"../../activity/create/" + id}>
+            <button className="addActivityBtn">+ Add Activity</button>
+          </Link>
+        </div>
+        <div className="destinations">
+          {destinations && destinations.length > 0
+            ? destinations.map((destination, index) => (
+                <DestinationBtn
+                  key={destination.id}
+                  id={destination.id}
+                  destination={destination.destination}
+                />
+              ))
+            : ""}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TripDetails;
+
+
+================================================================================
+FILE: client\vite.config.js
+================================================================================
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+    },
+  },
+});
+
+
+================================================================================
+FILE: server\config\data\data.json
+================================================================================
+[
+  {
+      "title": "Highlights of the United Kingdom",
+      "description": "Embark on a guided tour of England, Scotland, and Ireland, which will take you from cosmopolitan London to the medieval city of Edinburgh. Then, pass through the Lake District and Wales as you travel between Scotland and Ireland. After arriving in the Emerald Isle, grab a pint (or a few) with Dubliners and make your way along the scenic Ring of Kerry and Cliffs of Moher, taking in stunning sea views as you go.",
+      "img_url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Houses_Of_Parliament_Clock_Tower_%28Big_Ben%29.jpg",
+      "num_days": 10,
+      "start_date": "2023-07-11",
+      "end_date": "2023-07-22",
+      "total_cost": 3899.00
+  },
+  {
+      "title": "A Week in Italy: Venice, Florence, & Rome",
+      "description": "We've picked three iconic cities at the pulse of Italy's vibrant culture, both past and present. Venice brings romance to the forefront, with sprawling Baroque palaces and meandering, gondola-dotted canals. The Renaissance is tangible in Florence, where the presence of the world's greatest artists can still be felt. The people, the food, the way of lifeâ€”experience what Italy is all about as you make your way from one city to the next.",
+      "img_url": "https://tinyurl.com/5e7kcc5a",
+      "num_days": 7,
+      "start_date": "2023-03-01",
+      "end_date": "2023-03-08",
+      "total_cost": 2509.00
+  },
+  {
+      "title": "Egypt & Nile River Cruise",
+      "description": "Descend into a world of ancient wonders to discover the lands behind the legends. Walk past towering stone icons, through avenues of sphinxes, and into royal valleys amid the desert sands. Then, cruise down the Nile and anchor at remote islands and beside the Theban Hills. End your adventure in Cairo, where historic mosques mingle with today's modern bustle.",
+      "img_url": "https://tinyurl.com/yesanwy8",
+      "num_days": 12,
+      "start_date": "2024-04-30",
+      "end_date": "2024-05-11",
+      "total_cost": 3409.00
+  },
+  {
+      "title": "Ecuador & GalÃ¡pagos Islands",
+      "description": "Ecuador puts new meaning behind the saying, \"good things come in small packages.\" In terms of flora, fauna, and opportunities for viewing unique local wildlife, this South American country runs the gamut. Journey to Quito for a taste of Ecuadorean culture and Spanish colonial history. Then, island hop through the GalÃ¡pagos, where you'll move from mangrove swamps to lava flows to sunny shorelines, encountering scores of exotic creatures along the way.",
+      "img_url": "https://tinyurl.com/3f4nzn7z",
+      "num_days": 10,
+      "start_date": "2023-05-08",
+      "end_date": "2023-05-17",
+      "total_cost": 4879.00
+  }
+]
+
+================================================================================
+FILE: server\config\database.js
+================================================================================
+import pg from 'pg'
+import './dotenv.js'
+
+const config = {
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    host: process.env.PGHOST,
+    port: process.env.PGPORT,
+    database: process.env.PGDATABASE,
+    ssl: {
+        rejectUnauthorized: false
+    }
+}
+
+export const pool = new pg.Pool(config)
+
+================================================================================
+FILE: server\config\dotenv.js
+================================================================================
+import dotenv from 'dotenv'
+dotenv.config({ path: '../.env' })
+
+
+
+================================================================================
+FILE: server\config\reset.js
+================================================================================
+import { pool } from "./database.js";
+import "./dotenv.js";
+import { fileURLToPath } from "url";
+import path, { dirname } from "path";
+import fs from "fs";
+
+const currentPath = fileURLToPath(import.meta.url);
+
+const tripsFile = fs.readFileSync(
+  path.join(dirname(currentPath), "../config/data/data.json"),
+);
+
+const tripsData = JSON.parse(tripsFile);
+
+const dropAllTables = async () => {
+  const dropTablesQuery = `
+      DROP TABLE IF EXISTS trips_users;
+      DROP TABLE IF EXISTS trips_destinations;
+      DROP TABLE IF EXISTS activities;
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS destinations;
+      DROP TABLE IF EXISTS trips;
+  `;
+
+  try {
+    await pool.query(dropTablesQuery);
+    console.log("ðŸ§¹ all tables dropped successfully");
+  } catch (err) {
+    console.error("âš ï¸ error dropping tables", err);
+  }
+};
+
+const resetDatabase = async () => {
+  await dropAllTables();
+  await seedTripsTable();
+  await createDestinationsTable();
+  await createActivitiesTable();
+  await createTripsDestinationsTable();
+  await createUsersTable();
+  await createTripsUsersTable();
+};
+
+resetDatabase();
+
+const createTripsTable = async () => {
+  const createTripsTableQuery = `
+      CREATE TABLE IF NOT EXISTS trips (
+          id serial PRIMARY KEY,
+          title varchar(100) NOT NULL,
+          description varchar(500) NOT NULL,
+          img_url text NOT NULL,
+          num_days integer NOT NULL,
+          start_date date NOT NULL,
+          end_date date NOT NULL,
+          total_cost money NOT NULL
+      );
+  `;
+
+  try {
+    await pool.query(createTripsTableQuery);
+    console.log("ðŸŽ‰ trips table created successfully");
+  } catch (err) {
+    console.error("âš ï¸ error creating trips table", err);
+  }
+};
+
+const seedTripsTable = async () => {
+  await createTripsTable();
+
+  for (const trip of tripsData) {
+    const insertQuery = {
+      text: "INSERT INTO trips (title, description, img_url, num_days, start_date, end_date, total_cost) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+    };
+
+    const values = [
+      trip.title,
+      trip.description,
+      trip.img_url,
+      trip.num_days,
+      trip.start_date,
+      trip.end_date,
+      trip.total_cost,
+    ];
+
+    try {
+      await pool.query(insertQuery, values);
+      console.log(`âœ… ${trip.title} added successfully`);
+    } catch (err) {
+      console.error("âš ï¸ error inserting trip", err);
+    }
+  }
+};
+
+const createDestinationsTable = async () => {
+  const createDestinationsTableQuery = `
+      CREATE TABLE IF NOT EXISTS destinations (
+          id serial PRIMARY KEY,
+          destination varchar(100) NOT NULL,
+          description varchar(500) NOT NULL,
+          city varchar(100) NOT NULL,
+          country varchar(100) NOT NULL,
+          img_url text NOT NULL,
+          flag_img_url text NOT NULL
+      );
+  `;
+
+  try {
+    await pool.query(createDestinationsTableQuery);
+    console.log("ðŸŽ‰ destinations table created successfully");
+  } catch (err) {
+    console.error("âš ï¸ error creating destinations table", err);
+  }
+};
+
+const createActivitiesTable = async () => {
+  const createActivitiesTableQuery = `
+      CREATE TABLE IF NOT EXISTS activities (
+          id serial PRIMARY KEY,
+          trip_id int NOT NULL,
+          activity varchar(100) NOT NULL,
+          num_votes integer DEFAULT 0,
+          FOREIGN KEY(trip_id) REFERENCES trips(id)
+      );
+  `;
+  try {
+    await pool.query(createActivitiesTableQuery);
+    console.log("ðŸŽ‰ activities table created successfully");
+  } catch (err) {
+    console.error("âš ï¸ error creating activities table", err);
+  }
+};
+
+const createTripsDestinationsTable = async () => {
+  const createTripsDestinationsTableQuery = `
+      CREATE TABLE IF NOT EXISTS trips_destinations (
+          trip_id int NOT NULL,
+          destination_id int NOT NULL,
+          PRIMARY KEY (trip_id, destination_id),
+          FOREIGN KEY (trip_id) REFERENCES trips(id) ON UPDATE CASCADE,
+          FOREIGN KEY (destination_id) REFERENCES destinations(id) ON UPDATE CASCADE
+      );
+  `;
+  try {
+    await pool.query(createTripsDestinationsTableQuery);
+    console.log("ðŸŽ‰ trips_destinations table created successfully");
+  } catch (err) {
+    console.error("âš ï¸ error creating trips_destinations table", err);
+  }
+};
+
+const createUsersTable = async () => {
+  const createUsersTableQuery = `
+      CREATE TABLE IF NOT EXISTS users (
+          id serial PRIMARY KEY,
+          githubid integer NOT NULL,
+          username varchar(100) NOT NULL,
+          avatarurl varchar(500) NOT NULL,
+          accesstoken varchar(500) NOT NULL
+      );
+  `;
+  try {
+    await pool.query(createUsersTableQuery);
+    console.log("ðŸŽ‰ users table created successfully");
+  } catch (error) {
+    console.error("âš ï¸ error creating users table", err);
+  }
+};
+
+const createTripsUsersTable = async () => {
+  const createTripsUsersTableQuery = `
+      CREATE TABLE IF NOT EXISTS trips_users (
+          trip_id int NOT NULL,
+          user_id int NOT NULL,
+          PRIMARY KEY (trip_id, user_id),
+          FOREIGN KEY (trip_id) REFERENCES trips(id) ON UPDATE CASCADE,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE
+      );
+  `;
+  try {
+    await pool.query(createTripsUsersTableQuery);
+    console.log("ðŸŽ‰ trips_users table created successfully");
+  } catch (error) {
+    console.error("âš ï¸ error creating trips_users table", err);
+  }
+};
+
+
+================================================================================
+FILE: server\controllers\trips.js
+================================================================================
+import { pool } from "../config/database.js";
+
+const createTrip = async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      img_url,
+      num_days,
+      start_date,
+      end_date,
+      total_cost,
+    } = req.body;
+    const results = await pool.query(
+      "INSERT INTO trips (title, description, img_url, num_days, start_date, end_date, total_cost) \
+      VALUES($1, $2, $3, $4, $5, $6, $7) \
+      RETURNING *",
+      [title, description, img_url, num_days, start_date, end_date, total_cost],
+    );
+
+    res.status(201).json(results.rows[0]);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+  }
+};
+
+const getTrips = async (req, res) => {
+  try {
+    const results = await pool.query("SELECT * FROM trips ORDER BY id ASC");
+    res.status(200).json(results.rows);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+  }
+};
+
+const getTrip = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const results = await pool.query("SELECT * FROM trips WHERE id = $1", [id]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+    console.log("Unable to get trip");
+    console.log("Error:", error.message);
+  }
+};
+
+const updateTrip = async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      img_url,
+      num_days,
+      start_date,
+      end_date,
+      total_cost,
+    } = req.body;
+
+    const id = parseInt(req.params.id, 10);
+
+    const results = await pool.query(
+      `UPDATE trips
+       SET title = $1,
+           description = $2,
+           img_url = $3,
+           num_days = $4,
+           start_date = $5,
+           end_date = $6,
+           total_cost = $7
+       WHERE id = $8
+       RETURNING *`,
+      [
+        title,
+        description,
+        img_url,
+        num_days,
+        start_date,
+        end_date,
+        total_cost,
+        id,
+      ],
+    );
+
+    if (results.rows.length === 0) {
+      return res.status(404).json({ error: "Trip not found" });
+    }
+
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    console.error("Unable to update trip:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteTrip = async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const activity_deletion = await pool.query(
+      "DELETE FROM activities \
+      WHERE trip_id = $1",
+      [id],
+    );
+
+    const results = await pool.query("DELETE FROM trips WHERE id = $1", [id]);
+    res.status(200).json(results.rows);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+  }
+};
+
+export default {
+  createTrip,
+  getTrips,
+  getTrip,
+  updateTrip,
+  deleteTrip,
+};
+
+
+================================================================================
+FILE: server\package.json
+================================================================================
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run reset && nodemon --require dotenv/config server.js",
+    "reset": "cd config && node --require dotenv/config reset.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "pg": "^8.9.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+================================================================================
+FILE: server\routes\trips.js
+================================================================================
+import express from "express";
+import TripsController from "../controllers/trips.js";
+
+const router = express.Router();
+
+router.get("/", TripsController.getTrips);
+router.get("/:id", TripsController.getTrip);
+router.post("/", TripsController.createTrip);
+//router.put("/:id", TripsController.updateTrip);
+router.delete("/:id", TripsController.deleteTrip);
+router.patch("/:id", TripsController.updateTrip);
+
+export default router;
+
+
+================================================================================
+FILE: server\server.js
+================================================================================
+import express from "express";
+import cors from "cors";
+import tripRoutes from "./routes/trips.js";
+
+// create express app
+const app = express();
+
+app.use(express.json());
+
+app.use(cors());
+
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .send(
+      '<h1 style="text-align: center; margin-top: 50px;">âœˆï¸ On the Fly API</h1>',
+    );
+});
+
+app.use("/api/trips", tripRoutes);
+
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`ðŸš€ Server running on http://localhost:${PORT}`);
+});
+
