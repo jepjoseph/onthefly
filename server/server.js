@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://client-zkf8.onrender.com",
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   }),
@@ -28,11 +28,11 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false, // Local HTTP development only
+      sameSite: "none",
+      secure: true, // Local HTTP development only
     },
   }),
 );

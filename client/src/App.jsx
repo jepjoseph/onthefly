@@ -13,7 +13,7 @@ import Login from "./pages/Login";
 import Avatar from "./components/Avatar";
 
 const App = () => {
-  const API_URL = "http://localhost:3001";
+  const API_URL = import.meta.env.PROD ? "{YOUR_SERVER_URL}" : "/api"; // const API_URL = "http://localhost:3001";
   const [user, setUser] = useState(null);
   const [trips, setTrips] = useState([]);
   const [destinations, setDestinations] = useState([]);
