@@ -10,6 +10,8 @@ import tripRoutes from "./routes/trips.js";
 // create express app
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(express.json());
 
 app.use(
